@@ -46,6 +46,8 @@ private
           ENV["RAILS_GROUPS"] ||= "assets"
           ENV["RAILS_ENV"]    ||= "production"
           require 'benchmark'
+          topic("Running env")
+          Benchmark.realtime { pipe("env") }
           topic("Precompiling i18n-js translations")
           puts "Running: rake i18n:js:export"
           #time = Benchmark.realtime { pipe("rake i18n:js:export 2>&1") }
