@@ -1,3 +1,8 @@
+About this fork
+======================
+
+This fork repo behaves like heroku default buildpack but pre compiles i18n-js translations before running other asset preocompilation so that this gem can be used in production mode.
+
 Heroku buildpack: Ruby
 ======================
 

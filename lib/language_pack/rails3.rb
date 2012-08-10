@@ -45,10 +45,13 @@ private
         else
           ENV["RAILS_GROUPS"] ||= "assets"
           ENV["RAILS_ENV"]    ||= "production"
-
-          puts "Running: rake assets:precompile"
           require 'benchmark'
-          time = Benchmark.realtime { pipe("env PATH=$PATH:bin bundle exec rake assets:precompile 2>&1") }
+          topic("Precompiling i18n-js translations")
+          puts "Running: rake i18n:js:export"
+          time = Benchmark.realtime { pipe("env PATH=$PATH:bin bundle exec rake i18n:js:export 2>&1") }
+          topic("Continuing to regular asset precompilation")
+          puts "Running: rake assets:precompile"
+          time += Benchmark.realtime { pipe("env PATH=$PATH:bin bundle exec rake assets:precompile 2>&1") }
 
           if $?.success?
             log "assets_precompile", :status => "success"
