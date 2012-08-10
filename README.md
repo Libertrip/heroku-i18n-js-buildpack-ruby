@@ -3,6 +3,15 @@ About this fork
 
 This fork repo behaves like heroku default buildpack but pre compiles i18n-js translations before running other asset preocompilation so that this gem can be used in production mode.
 
+application.rb should look like this: https://gist.github.com/3316981
+
+to boot application without DB use: env SKIP_DB=1 bundle exec rake i18n:js:export
+
+That is what the buildpack does and it compiles well. Add this .gitignore
+
+/app/assets/javascript/i18n/*
+
+
 Heroku buildpack: Ruby
 ======================
 
