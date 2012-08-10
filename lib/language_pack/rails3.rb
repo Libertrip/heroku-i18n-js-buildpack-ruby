@@ -49,7 +49,7 @@ private
           topic("Precompiling i18n-js translations")
           puts "Running: rake i18n:js:export"
           #time = Benchmark.realtime { pipe("rake i18n:js:export 2>&1") }
-          i18n_command = "env RAILS_ENV=development DATABASE_URL=scheme://user:pass@127.0.0.1/dbname bundle exec rake i18n:js:export 2>&1"
+          i18n_command = "env RAILS_ENV=development DATABASE_URL=postgres://user:pass@127.0.0.1/dbname bundle exec rake i18n:js:export 2>&1"
           time = Benchmark.realtime { pipe(i18n_command) }
           topic("Continuing to regular asset precompilation")
           puts "Running: rake assets:precompile"
