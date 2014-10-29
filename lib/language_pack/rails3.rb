@@ -67,7 +67,7 @@ private
         topic("Precompiling i18n-js translations")
         i18n_command = rake.task("i18n:js:export")
         if i18n_command.is_defined?
-          i18n_command.invoke(env: rake_env.merge("SKIP_DB" => 1))
+          i18n_command.invoke(env: rake_env.merge("SKIP_DB" => '1'))
         end
 
         topic("Continuing to regular asset precompilation")
