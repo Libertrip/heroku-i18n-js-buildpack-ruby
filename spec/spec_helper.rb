@@ -4,23 +4,23 @@ require 'fileutils'
 require 'hatchet'
 require 'rspec/retry'
 require 'language_pack'
-
-require 'language_pack'
+require 'language_pack/shell_helpers'
 
 ENV['RACK_ENV'] = 'test'
 
 RSpec.configure do |config|
-  config.filter_run focused: true unless ENV['IS_RUNNING_ON_TRAVIS']
+  config.filter_run focused: true unless ENV['IS_RUNNING_ON_CI']
   config.run_all_when_everything_filtered = true
   config.alias_example_to :fit, focused: true
   config.full_backtrace      = true
   config.verbose_retry       = true # show retry status in spec process
-  config.default_retry_count = 2 if ENV['IS_RUNNING_ON_TRAVIS'] # retry all tests that fail again
+  config.default_retry_count = 2 if ENV['IS_RUNNING_ON_CI'] # retry all tests that fail again
 
   config.expect_with :rspec do |c|
     c.syntax = :expect
   end
-  config.mock_with :none
+  config.mock_with :nothing
+  config.include LanguagePack::ShellHelpers
 end
 
 def git_repo
@@ -29,7 +29,8 @@ end
 
 def successful_body(app, options = {})
   retry_limit = options[:retry_limit] || 50
-  Excon.get("http://#{app.name}.herokuapp.com", :idempotent => true, :expects => 200, :retry_limit => retry_limit).body
+  url = "http://#{app.name}.herokuapp.com"
+  Excon.get(url, :idempotent => true, :expects => 200, :retry_limit => retry_limit).body
 end
 
 def create_file_with_size_in(size, dir)
@@ -38,10 +39,14 @@ def create_file_with_size_in(size, dir)
   Pathname.new name
 end
 
-
 ReplRunner.register_commands(:console)  do |config|
   config.terminate_command "exit"          # the command you use to end the 'rails console'
   config.startup_timeout 60                # seconds to boot
   config.return_char "\n"                  # the character that submits the command
   config.sync_stdout "STDOUT.sync = true"  # force REPL to not buffer standard out
+end
+
+if ENV['TRAVIS']
+  # Don't execute tests against "merge" commits
+  exit 0 if ENV['TRAVIS_PULL_REQUEST'] != 'false' && ENV['TRAVIS_BRANCH'] == 'master'
 end

@@ -1,5 +1,249 @@
 ## Master
 
+## v191 (8/23/2018)
+
+* Warn when `config.action_dispatch.x_sendfile_header` is set but apache and nginx are not being used (https://github.com/heroku/heroku-buildpack-ruby/pull/795)
+
+## v190 (7/24/2018)
+
+* Support TAP output for Heroku CI (https://github.com/heroku/heroku-buildpack-ruby/pull/790).
+
+## v189 (7/10/2018)
+
+* Colorize build failures and warnings. (https://github.com/heroku/heroku-buildpack-ruby/pull/788)
+
+## v188 (6/26/2018)
+
+* Fix rails config detect timeout. Addreses the process deadlock when detecting rails config that contains an infinite task. This was originally addressed in #770 but the implementation did not handle all cases. (#781)
+
+## v187 (6/19/2018)
+
+* Prevent apps from deploying with known security vulnerability activated via config (#776)
+
+## v186 (6/12/2018)
+
+* The Ruby buildpack can now detect Rails configuration in a project (#758 #770)
+
+## v185 (5/31/2018)
+
+* The Ruby buildpack bootstrap Ruby version is now 2.5.1. This is not a customer facing feature (#765)
+
+## v184 (5/30/2018)
+
+* Default Ruby version is now 2.4.4 (#734)
+
+## v183 (4/26/2018)
+
+* Support for not yet released heroku-18 stack (#750)
+
+## v182 (4/24/2018)
+
+* Do not warn when `rails runner` cannot be executed (#749)
+
+## v181 (4/23/2018)
+
+* The `active_storage` is not guranteed to be present (#748)
+
+## v180 (4/23/2018)
+
+* Fix case where user environment variables were not being used (#745)
+
+## v179 (4/23/2018)
+
+* Emit warnings for Active Storage (#739)
+
+## v178 (4/17/2018)
+
+* Use S3 directly instead of s3pository for Node downloads (#740)
+
+## v177 (4/10/2018)
+
+* New apps that do not specify a Ruby version now get 2.3.7 (#732)
+* Bugfix: `bundle install` output no longer has an extra newline (#735)
+* Bugfix: when deploying an application the `ruby` version specified in the Gemfile is available outide of the home directory (#733)
+
+## v176 (3/27/2018)
+
+* Node version upgraded to v8.9.4 (#714)
+* Yarn version upgraded to v1.5.1 (#714)
+* Fix issue with malformed UTF-8 string parsing (#724)
+
+## v175 (03/21/2018)
+
+* Suggest users encountering a specific sprockets error in specific beta versions to upgrade (#718)
+* Log metrics for common failures (#716)
+
+## v174 (02/13/2018)
+
+* Only set JAVA_HOME for Bundler when using JRuby (#649, @jkutner)
+
+## v173 (12/22/2017)
+
+* Remove Bundler shim since Bundler 2.5.0 will not vendor Bundler (#645)
+
+## v172 (12/22/2017)
+
+* updated Ruby 2.5.0 support + Bundler shim (#640)
+* Disable bundler version check (#632)
+* set JAVA_HOME to absolute path during `bundle install` (#631)
+
+## v170 (10/19/2017)
+
+* Compatiability for Ruby 2.5.0 preview 1 (#628)
+
+## v169 (09/28/2017)
+
+* Yarn version upgraded to v1.0.2
+
+## v168 (08/14/2017)
+
+* Install Node when using either ExecJS _or_ Webpacker (#608)
+* Make installs more robust against temporary network issues by retrying failed
+  downloads in `LanguagePack::Fetcher#fetch_untar`, which installs Rubies (#585)
+
+## v167 (07/25/2016)
+
+* Update Bundler to 1.15.2 (#602)
+
+## v166 (07/11/2017)
+
+* no changes from v165
+
+## v165 (07/11/2017)
+
+* Set `$JAVA_HOME` for JRuby apps during build (#593)
+* Update Node to 6.11.1 (#598)
+
+## v164 (06/21/2017)
+
+* Update Bundler to 1.15.1 (#579)
+
+## v163 (05/22/2017)
+
+* Fix CI rake tasks not running (#571)
+
+## v162 (05/18/2017)
+
+* Disable roubocop warnings for `heroku_clear_tasks` (#567)
+
+## v161 (05/18/2017)
+
+* Ruby apps being run on CI are no longer expected to have Rails commands (#565)
+
+## v160 (05/18/2017)
+
+* `bin/rails test` only gets called in CI for Rails 5+ apps
+* support `:sql` (structure) Rails schema for CI (#549)
+
+## v159 (04/24/2017)
+
+*  Blacklist JAVA_OPTS and JAVA_TOOL_OPTIONS during build (#559)
+
+## v158 (04/12/2017)
+
+*  Fix CI issue causing system Ruby to be used (#558)
+
+## v157 (04/11/2017)
+
+* Fix "double ruby rainbow bug" caused by executing two `compile` actions on the same
+app (#553 & #555)
+* Remove Ruby 1.8.7 compatiability to allow for #555. This version of Ruby has been EOL
+for a long time. It is not available on Cedar-14 and Cedar-10 is EOL
+
+## v156 (04/11/2017)
+
+* Update default Ruby version to 2.3.4.
+
+## v155 (03/16/2017)
+
+* Yarn now installed for apps with `webpacker` gem (#547)
+
+## v154 (03/01/2017)
+
+* Postgres database add-on will only be provisioned if app has a postgres driver in the `Gemfile`. (#535)
+* Fix regression, where JRuby patchlevel was being pulled from `Gemfile.lock` and used when not appropriate (#536)
+
+## v153 (01/18/2017)
+
+* Fix regression, where defaults would override user env with rake (#528)
+
+## v152 (01/18/2017)
+
+* Remove RAILS_GROUPS=assets from being set in .profile.d (#526)
+
+## v151 (01/16/2017)
+
+* Upgrade to bundler 1.13.7 (#519)
+* Vendor Default Ruby to execute the buildpack (#515)
+* Heroku CI Support (#516)
+
+## v150 (12/23/2016)
+
+* Allow deployment of pre-release rubies (preview and rc) with Bundler 1.13.6+. This is needed because the patch level is recorded in the gemfile as `-1` since it is not released yet. For example 2.4.0rc1 will show up in a `Gemfile.lock` like this:
+
+```
+RUBY VERSION
+   ruby 2.4.0p-1
+```
+
+## v149 (12/01/2016)
+
+* Guarantee we always show warning when upgrading bundler version.
+
+## v148 (11/17/2016)
+
+* Default Ruby Version is 2.2.6
+* Update libyaml to 0.1.7 for [CVE-2014-9130](https://devcenter.heroku.com/changelog-items/1016)
+
+## v147 (11/15/2016)
+
+* Bump bundler to 1.13.6 [Bundler changelog](https://github.com/bundler/bundler/blob/v1.13.6/CHANGELOG.md). Allows for use of Ruby version operators.
+
+## v146 (03/23/2016)
+
+* Warn when `.bundle/config` is checked in (#471)
+* Do not cache `.bundle/config` between builds (#471)
+* Set WEB_CONCURRENCY for M-Performance dynos using sensible defaults (#474)
+* Fix rake task detection in Rails apps actually fails builds (#475)
+
+## v145 (03/08/2016)
+
+* Bump bundler to 1.11.2 [Bundler changelog](https://github.com/bundler/bundler/blob/master/CHANGELOG.md#1112-2015-12-15) (#461)
+* Rails 5 Support for logging to STDOUT via environment variable (#460)
+* Fail build when rake tasks cannot be detected in a Rails app (#462)
+
+## v144 (02/01/2016)
+
+* Fix default ruby to actually be Ruby 2.2.4 (#456)
+
+## v143 (01/28/2016)
+
+* Change default for new apps to Ruby 2.2.4 (#454)
+
+## v142 (01/14/2016)
+
+* Added pgconfig jar to JDK for JRuby JDBC (#450)
+* Let API pick exact postgres plan (#449)
+* Follow redirects on `curl` command (#443)
+* Check for preinstalled JDK (#434)
+
+## v141 (11/03/2015)
+
+* Support for custom JDK versions in system.properties (#423)
+* Fix nodejs buildpack integration (#429)
+* Automatic jruby heap setting for IX dynos (#426)
+* Warn when RAILS_ENV != production (https://devcenter.heroku.com/articles/deploying-to-a-custom-rails-environment)
+* Warn when using asset_sync (https://devcenter.heroku.com/articles/please-do-not-use-asset-sync)
+
+## v140 (9/9/2015)
+
+* JRuby specific ruby error message (#412)
+
+## v139 (8/31/2015)
+
+* Cached asset file should never take precedent over existing file (#402)
+* Do not write `database.yml` when using active record >= 4.1 (previously we only detected >= Rails 4.1) (#403)
+
 ## v138 (5/19/2015)
 
 * Bump bundler to 1.9.7 [Bundler changelog](https://github.com/bundler/bundler/blob/master/CHANGELOG.md#196-2015-05-02) (#378)
